@@ -24,16 +24,20 @@ knitr::opts_chunk$set(
 
 ### 一些直观的时间序列
 
-```{r warning=FALSE}
+```{r}
 library(tidyverse)
 library(forcats)
 library(fpp2)
 library(ggfortify)
-autoplot(gold, ts.colour = 'red', ts.linetype = 'dashed')
-frequency(woolyrnq)
-frequency(gas)
+library(ggthemes)
+autoplot(ausbeer,ts.colour = "blue",main = "啤酒销量",xlab = "时间")+theme_clean()
+autoplot(AirPassengers,ts.colour = "red",main="乘客数量",xlab = "时间") +theme_clean()
+```
 
 
+
+
+```{r warning=FALSE}
 autoplot(melsyd[,"Economy.Class"]) +
   ggtitle("墨尔本 - 悉尼经济舱乘客客流量") +
   xlab("年份") +
@@ -79,8 +83,18 @@ ggseasonplot(a10, polar=TRUE) +
 library(stats)
 autoplot(stl(AirPassengers, s.window = 'periodic'), ts.colour = 'blue')
 ```
+
+## 时间序列的模式
+### 趋势
+### 季节性
+### 周期性
 ```{r}
-autoplot(stl(a10,s.window = 'periodic'),ts.colour = 'red')
+decompose_beer  <- decompose(ausbeer,type = "additive")
+autoplot(decompose_beer,ts.colour = 'blue',main = "啤酒销量的加法分解")+theme_clean()
+
+decompose_as <- decompose(AirPassengers,type= "multiplicative")
+autoplot(decompose_as,ts.colour = 'red',main = "乘客数量的乘法分解")+theme_clean()
+
 ```
 
 
