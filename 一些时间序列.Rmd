@@ -40,12 +40,22 @@ autoplot(AirPassengers,ts.colour = "red",main="乘客数量",xlab = "时间") +t
 ```{r warning=FALSE}
 autoplot(melsyd[,"Economy.Class"]) +
   ggtitle("墨尔本 - 悉尼经济舱乘客客流量") +
+  theme_clean() +
   xlab("年份") +
   ylab("千")+
   theme(text = element_text(family = "STHeiti"))+
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
+### 中国股市开户数的一个趋势
+```{r}
+setwd("C:/Users/jefee/Desktop")
+data <- read_csv('data2.csv')
+pt<-ts(data$`信用账户新增开户投资者数:合计`,frequency=12,start=c(2011,1),end = c(2020,2))
+dec_data <- decompose(pt,type='additive')
+autoplot(dec_data) +theme_clean()
+
+```
 
 
 
@@ -55,9 +65,10 @@ autoplot(melsyd[,"Economy.Class"]) +
 ### 季节性
 ### 周期性
 ```{r}
-autoplot(AirPassengers )
-autoplot(arrivals, facets = TRUE)
+autoplot(AirPassengers )+theme_clean()
+autoplot(arrivals, facets = TRUE)+theme_clean()
 autoplot(arrivals, facets = TRUE) +
+  theme_clean() +
   geom_smooth() +
   labs(title ="到澳大利亚旅客人数",
        y = "Arrivals (in thousands)",
@@ -70,18 +81,21 @@ ggseasonplot(a10, year.labels=TRUE, year.labels.left=TRUE) +
   ylab("百万（美元）") +
   ggtitle("季节图：降糖药物销量")+
   theme(text = element_text(family = "STHeiti"))+
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme_clean()
 ggseasonplot(a10, polar=TRUE) +
   xlab("月份")+
   ylab("百万（美元）") +
   ggtitle("极坐标季节图：降糖药物销量")+
   theme(text = element_text(family = "STHeiti"))+
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5))+
+  theme_clean()
 ```
 
 ```{r}
 library(stats)
-autoplot(stl(AirPassengers, s.window = 'periodic'), ts.colour = 'blue')
+autoplot(stl(AirPassengers, s.window = 'periodic'), ts.colour = 'blue')+
+  theme_clean()
 ```
 
 ## 时间序列的模式
@@ -96,5 +110,8 @@ decompose_as <- decompose(AirPassengers,type= "multiplicative")
 autoplot(decompose_as,ts.colour = 'red',main = "乘客数量的乘法分解")+theme_clean()
 
 ```
+
+
+
 
 
