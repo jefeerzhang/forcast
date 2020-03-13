@@ -28,7 +28,8 @@ knitr::opts_chunk$set(
 library(tidyverse)
 library(forcats)
 library(fpp2)
-autoplot(gold)
+library(ggfortify)
+autoplot(gold, ts.colour = 'red', ts.linetype = 'dashed')
 frequency(woolyrnq)
 frequency(gas)
 
@@ -73,4 +74,13 @@ ggseasonplot(a10, polar=TRUE) +
   theme(text = element_text(family = "STHeiti"))+
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
+```{r}
+library(stats)
+autoplot(stl(AirPassengers, s.window = 'periodic'), ts.colour = 'blue')
+```
+```{r}
+autoplot(stl(a10,s.window = 'periodic'),ts.colour = 'red')
+```
+
 
