@@ -111,6 +111,31 @@ autoplot(decompose_as,ts.colour = 'red',main = "乘客数量的乘法分解")+th
 
 ```
 
+### 测试armia对中国季度gdp测试
+```{r}
+library(tidyverse)
+library(ggfortify)
+library(ggthemes)
+library(forcats)
+library(xts)
+library(forecast)
+# 读取数据时可以直接使用Rstudio里的图像方式读取，同时修改列的类型
+gdp_test <- read_excel("C:/Users/jefee/Desktop/gdp_test.xlsx", col_types = c("date", "numeric", "numeric","numeric", "numeric"))
+#删除na
+gdp_test<-drop_na(gdp_test)
+#修改列名
+colnames(gdp_test) <- c('time','sgdp','s1gdp','s2gdp','s3gdp')
+#转化为xts数据类型
+gdp_xts <- xts(gdp_test[,-1],order.by = gdp_test$time)
+
+# 画图前准备,转换为季度数据
+gpd_xts_q<-to.quarterly(gdp_xts)
+#画图
+autoplot(gpd_xts_q,facets = F,ts.size = 2,alpha = 0.6)+
+  ggtitle("中国季度gdp")+
+  xlab("年份")+
+  theme_clean()
+```
 
 
 
