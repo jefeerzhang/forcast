@@ -112,10 +112,8 @@ autoplot(decompose_as,ts.colour = 'red',main = "乘客数量的乘法分解")+th
 ```
 
 ### 测试armia对中国季度gdp测试
-```{r}
-library(tidyverse)
-library(ggfortify)
-library(ggthemes)
+```{r message=TRUE, warning=FALSE}
+library(readxl)
 library(forcats)
 library(xts)
 library(forecast)
@@ -134,7 +132,13 @@ gpd_xts_q<-to.quarterly(gdp_xts)
 autoplot(gpd_xts_q,facets = F,ts.size = 2,alpha = 0.6)+
   ggtitle("中国季度gdp")+
   xlab("年份")+
+  theme(text =element_text(family = "STHeiti"))+
   theme_clean()
+
+# 进行预测
+d.arima <- auto.arima(gpd_xts_q[,1])
+d.forecast <- forecast(d.arima, level = c(95), h = 50,fan = T,bootstrap = T)
+autoplot(d.forecast,size =2,alpha=0.7)
 ```
 
 
