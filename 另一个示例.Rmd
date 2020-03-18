@@ -1,0 +1,49 @@
+---
+title: "一篇本科生论文的时间趋势图"
+author: "Zhang JIan"
+date: "2020/3/18"
+output: html_document
+---
+<style>
+  p{
+    font-size:18px;
+    line-height:1.5em;
+    text-indent:35px;
+  }
+  	#header {
+	    text-align: center;
+	}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 数据也放上来，如果有更好的方法，也请指出
+
+```{r}
+library(haven)
+library(tidyverse)
+library(ggthemes)
+library(ggplot2)
+library(forecast)
+# 读入数据
+data <- read_dta("C:/Users/jefee/Desktop/data.dta")
+for (i in 1:length(unique(data$id))) {
+  nam <- paste("df" , i ,sep='_')
+  assign(nam ,
+         ts(data %>%filter(id==i) %>% mutate(s_RE = scale(RE)) %>%
+              select(s_RE) ,start = 2009,end = 2018,frequency = 1))}
+
+gdp <- ts( data %>% mutate(s_GDP = scale(GDP)) %>% select(s_GDP) ,start = 2009,end = 2018,frequency = 1)
+
+cpi <- ts(data %>% mutate(s_CPI = scale(CPI)) %>% select(s_CPI),start = 2009,end = 2018,frequency = 1)
+df_ts <- ts.union(df_1,df_2,df_3,df_4,df_5,gdp,cpi) 
+colnames(df_ts) <- c('农行','交行','工行','建行','中行','GDP','CPI')
+
+autoplot(df_ts) +theme_bw() +ggtitle("银行融资成本和宏观经济数据") + xlab('时间') +
+  ylab('银行融资成本？RE and GDP & CPI（标准化后）')
+
+
+```
+
